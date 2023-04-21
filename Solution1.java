@@ -1,35 +1,33 @@
-package test;
+package test2;
 
-import java.util.Arrays;
-public class Solution1 {
+import java.util.HashMap;
 
-	public char[] solution(int n, int[][] ladder){ //n은 학생 수(A,B ..) 
-		char[] answer = new char[n]; // 코드 길이가 n인 answer선언{A, B, C..}
-		for (int i = 0; i < n; i++) { // 학생 수만큼 반복
-			answer[i] = (char)(65 + i); // 인덱스에 있는 학생을 A->65 정수형으로 변환
+public class Solution1 { // 한번만 사용한 최초 문자의 인덱스 찾기
+	public int solution(String s) {
+		// key:문자, value:문자가 저장된 횟수
+		HashMap<Character, Integer> sH = new HashMap<>();
+		// s문자열의 모든 문자를 HashMap에 추가
+		for (char x : s.toCharArray()) { // 문자열 s를 문자 배열로 변환하고 x를 차례로 순회
+			sH.put(x, sH.getOrDefault(x, 0) + 1);// key(x)값 없으면 0 리턴되고 +1하여 value값 새로 지정
+		} // sH.getOrDefault(x,0)메소드가 key(x)값을 반환
+
+		// 문자열의 길이만큼 반복
+		for (int i = 0; i < s.length(); i++) {
+			if (sH.get(s.charAt(i)) == 1) { // 문자열 s에서 i번째 문자의 value값이 1이면
+				return i + 1; // 해당 인덱스+1(인덱스 0부터 시작) 리턴 
+			}
 		}
-		for (int[] line : ladder) { //첫번째 행 사다리{1, 3}, 두번째 라인{2, 4}, 세번째라인{1, 4}}
-			// 각 요소를 line에 할당
-			for(int x : line) { //(1,3)을 x=1, x=3 두번 할당(반복) 
-				char tmp = answer[x]; //1-2 이어진 사다리 스위치 하기 위한 빈변수 설정.B담기 
-				answer[x] = answer[x-1]; // x=1일때 [0],[1]값이 연결되어 있음. B에 A담기(B->A)
-				answer[x-1] = tmp; // A에 B담기(A->B)
-			} //첫번째 행에 대한 반복 끝나면 두번째 ladder 실행
-		}
-		return answer;
+		return -1; // 한번만 사용한 문자 없으면 -1 리턴
+
 	}
-	
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
-
-			Solution1 T = new Solution1();
-			System.out.println(Arrays.toString(T.solution(5, new int[][]{{1, 3}, {2, 4}, {1, 4}})));
-			System.out.println(Arrays.toString(T.solution(7, new int[][]{{1, 3, 5}, {1, 3, 6}, {2, 4}})));
-			System.out.println(Arrays.toString(T.solution(8, new int[][]{{1, 5}, {2, 4, 7}, {1, 5, 7}, {2, 5, 7}})));
-			System.out.println(Arrays.toString(T.solution(12, new int[][]{{1, 5, 8, 10}, {2, 4, 7}, {1, 5, 7, 9, 11}, {2, 5, 7, 10}, {3, 6, 8, 11}})));
-
+		Solution1 T = new Solution1();
+		System.out.println(T.solution("statitsics"));
+		System.out.println(T.solution("aabb"));
+		System.out.println(T.solution("stringshowtime"));
+		System.out.println(T.solution("abcdeabcdfg"));
 	}
-	
 
 }
